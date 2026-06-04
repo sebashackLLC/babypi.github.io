@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Official developer documentation for the baby.tech LUA scripting API. Extend cheat capabilities, draw custom interfaces, build interactive menus, and control anti-aim.">
+    <title>baby.tech | LUA API Documentation</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="glass-bg"></div>
+    <div class="gradient-glow"></div>
+
+    <header class="app-header">
+        <div class="logo">
+            <span class="accent-dot"></span>
+            <h1>baby<span>.tech</span></h1>
+            <span class="badge">LUA API v2.0</span>
+        </div>
+        <div class="search-wrapper">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input type="text" id="api-search" placeholder="Search functions, callbacks, or properties...">
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <ul class="nav-list">
+                <li class="nav-item active" data-section="overview">
+                    <span class="nav-indicator"></span>
+                    <a href="#overview">Overview</a>
+                </li>
+                
+                <li class="nav-category">Core Namespace APIs</li>
+                <li class="nav-item" data-section="client">
+                    <span class="nav-indicator"></span>
+                    <a href="#client">client</a>
+                </li>
+                <li class="nav-item" data-section="draw">
+                    <span class="nav-indicator"></span>
+                    <a href="#draw">draw</a>
+                </li>
+                <li class="nav-item" data-section="engine">
+                    <span class="nav-indicator"></span>
+                    <a href="#engine">engine</a>
+                </li>
+                <li class="nav-item" data-section="cmd">
+                    <span class="nav-indicator"></span>
+                    <a href="#cmd">cmd</a>
+                </li>
+                <li class="nav-item" data-section="menu">
+                    <span class="nav-indicator"></span>
+                    <a href="#menu">menu</a>
+                </li>
+                <li class="nav-item" data-section="localplayer">
+                    <span class="nav-indicator"></span>
+                    <a href="#localplayer">localplayer</a>
+                </li>
+
+                <li class="nav-category">Developer Tools</li>
+                <li class="nav-item" data-section="playground">
+                    <span class="nav-indicator"></span>
+                    <a href="#playground">Interactive Playground</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="content-area">
+            <!-- Section: Overview -->
+            <section id="overview" class="content-section active">
+                <div class="glass-card hero-card">
+                    <h2>Enhance your gameplay with scripts.</h2>
+                    <p class="subtitle">The baby.tech LUA framework allows you to build custom indicators, control angles for anti-aim, and design highly personalized widgets with direct game loop hooks.</p>
+                    <div class="hero-actions">
+                        <a href="#playground" class="btn btn-primary">Try Interactive Simulator</a>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="glass-card">
+                        <h3>Getting Started</h3>
+                        <p>Place your script in the <code>baby/lua/</code> directory inside your Team Fortress 2 folder (e.g. <code>baby/lua/test.lua</code>). Open the cheat menu, navigate to the <b>Configs &rarr; Lua</b> tab, and toggle your script to load it.</p>
+                    </div>
+                    <div class="glass-card">
+                        <h3>Event Loop Hooks</h3>
+                        <p>All script interactions are driven by events. Use <code>client.register_callback</code> to subscribe to paint and create_move ticks.</p>
+                        <pre><code class="language-lua">client.register_callback("paint", function()
+    -- Render operations here
+end)</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: client -->
+            <section id="client" class="content-section">
+                <h2>client namespace</h2>
+                <p class="section-desc">Utility functions for interacting with the cheat's core, logging, input events, and user settings.</p>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">client.log</span>
+                        <span class="api-params">(string message)</span>
+                    </div>
+                    <p class="api-desc">Outputs a custom message directly to the game developer console with the baby.tech prefix.</p>
+                    <pre><code class="language-lua">client.log("Hello from baby.tech LUA!")</code></pre>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">client.register_callback</span>
+                        <span class="api-params">(string event, function callback)</span>
+                    </div>
+                    <p class="api-desc">Hooks a LUA function to be executed during specific game events.</p>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Event</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>"paint"</code></td>
+                                    <td>Runs every screen render frame. Used for drawing custom indicators, panels, or esp.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>"create_move"</code></td>
+                                    <td>Runs on local movement packet generation. Used for anti-aim, speed adjustments, and command modification.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">client.key_down</span>
+                        <span class="api-params">(int virtual_key)</span>
+                    </div>
+                    <p class="api-desc">Returns whether the specified virtual key code is currently held down.</p>
+                    <pre><code class="language-lua">if client.key_down(1) then -- 1 is Left Mouse Button
+    client.log("LBUTTON held down!")
+end</code></pre>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">client.key_pressed</span>
+                        <span class="api-params">(int virtual_key)</span>
+                    </div>
+                    <p class="api-desc">Returns true only on the initial frame a key is pressed down.</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">client.is_menu_open</span>
+                        <span class="api-params">()</span>
+                    </div>
+                    <p class="api-desc">Returns true if the baby.tech UI menu is currently open on screen.</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">client.mouse_pos</span>
+                        <span class="api-params">()</span>
+                    </div>
+                    <p class="api-desc">Returns two integers representing the current cursor coordinates <code>(x, y)</code> on the screen.</p>
+                    <pre><code class="language-lua">local mx, my = client.mouse_pos()</code></pre>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">client.menu_accent</span>
+                        <span class="api-params">()</span>
+                    </div>
+                    <p class="api-desc">Returns the current RGB values of the active UI accent color selected by the user <code>(r, g, b)</code>.</p>
+                    <pre><code class="language-lua">local ar, ag, ab = client.menu_accent()</code></pre>
+                </div>
+            </section>
+
+            <!-- Section: draw -->
+            <section id="draw" class="content-section">
+                <h2>draw namespace</h2>
+                <p class="section-desc">API functions to draw custom text, vector shapes, bounding boxes, and execute custom premium animations.</p>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">draw.text</span>
+                        <span class="api-params">(string text, int x, int y, int r, int g, int b, int a, [string font])</span>
+                    </div>
+                    <p class="api-desc">Draws text to the screen. Supported fonts: <code>"menu"</code>, <code>"esp"</code>, <code>"esp_small"</code>, <code>"indicator"</code>, <code>"splash"</code>.</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">draw.rect</span>
+                        <span class="api-params">(int x, int y, int w, int h, int r, int g, int b, int a)</span>
+                    </div>
+                    <p class="api-desc">Draws a solid filled rectangle.</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">draw.outlined_rect</span>
+                        <span class="api-params">(int x, int y, int w, int h, int r, int g, int b, int a)</span>
+                    </div>
+                    <p class="api-desc">Draws a single-pixel outline border rectangle.</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">draw.line</span>
+                        <span class="api-params">(int x1, int y1, int x2, int y2, int r, int g, int b, int a)</span>
+                    </div>
+                    <p class="api-desc">Draws a line from coordinates (x1, y1) to (x2, y2).</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">draw.circle</span>
+                        <span class="api-params">(int x, int y, int radius, int segments, int r, int g, int b, int a)</span>
+                    </div>
+                    <p class="api-desc">Draws an unfilled segment circle.</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">draw.screen_size</span>
+                        <span class="api-params">()</span>
+                    </div>
+                    <p class="api-desc">Returns the current width and height of the game viewport window <code>(w, h)</code>.</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">draw.text_size</span>
+                        <span class="api-params">(string text, string font)</span>
+                    </div>
+                    <p class="api-desc">Calculates and returns the bounding width and height of the text string for the chosen font type <code>(width, height)</code>. Crucial for right-aligning UI elements.</p>
+                </div>
+
+                <!-- Premium C++ Animations APIs -->
+                <div class="api-card highlight-card">
+                    <div class="api-header">
+                        <span class="api-method">draw.animated_bar</span>
+                        <span class="api-params">(string id, int x, int y, int w, int h, float target_fraction, int r, int g, int b, int a, [string anim_type], [float speed])</span>
+                    </div>
+                    <p class="api-desc">Draws a sliding progress bar with built-in interpolation animations on the C++ side. Extremely smooth performance.</p>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Animation Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>"spring"</code></td>
+                                    <td>Default. Uses a custom mass-spring physics engine with critical damping (0.7) for a bouncy Apple-style slider feedback.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>"lerp"</code></td>
+                                    <td>Traditional exponential sliding easing animation.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>"linear"</code></td>
+                                    <td>Constant speed slide.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="api-card highlight-card">
+                    <div class="api-header">
+                        <span class="api-method">draw.animated_text</span>
+                        <span class="api-params">(string id, string text, int x, int y, int r, int g, int b, int a, [string anim_type], [float speed], [string font])</span>
+                    </div>
+                    <p class="api-desc">Executes animations on text directly in the rendering pipeline for maximum performance.</p>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Animation Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>"pulse"</code></td>
+                                    <td>Pulsates the alpha transparency of the text using a smooth sine wave.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>"rainbow"</code></td>
+                                    <td>Generates a dynamic RGB cycling color effect across the text.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>"shake"</code></td>
+                                    <td>Adds a glitchy retro shake to the text coordinates.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>"wave"</code></td>
+                                    <td>Vertically floats the text up and down.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: engine -->
+            <section id="engine" class="content-section">
+                <h2>engine namespace</h2>
+                <p class="section-desc">Retrieve game-state telemetry such as active connections, angle lists, doubletap metrics, and weapon crithack predictions.</p>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">engine.is_in_game</span>
+                        <span class="api-params">()</span>
+                    </div>
+                    <p class="api-desc">Returns true if the local player is currently loaded into a game server map.</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">engine.fake_angles</span>
+                        <span class="api-params">()</span>
+                    </div>
+                    <p class="api-desc">Returns the current fake angles (pitch, yaw, roll) being dispatched to the game server.</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">engine.real_angles</span>
+                        <span class="api-params">()</span>
+                    </div>
+                    <p class="api-desc">Returns the real client viewangles (pitch, yaw, roll) calculated by the game simulation.</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">engine.doubletap_info</span>
+                        <span class="api-params">()</span>
+                    </div>
+                    <p class="api-desc">Returns doubletap telemetry: <code>(ticks_accumulated, max_ticks, is_recharging)</code>.</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">engine.crit_info</span>
+                        <span class="api-params">()</span>
+                    </div>
+                    <p class="api-desc">Returns crithack telemetry details: <code>(is_crit_allowed_by_server, is_boosted, is_force_crit_active)</code>.</p>
+                </div>
+            </section>
+
+            <!-- Section: cmd -->
+            <section id="cmd" class="content-section">
+                <h2>cmd namespace</h2>
+                <p class="section-desc">Write, read, and override command values inside the <code>create_move</code> event loop.</p>
+                <div class="alert alert-warning">
+                    <strong>Warning:</strong> cmd functions are only functional inside <code>create_move</code> callbacks. Accessing them from draw or paint will fail.
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">cmd.get_viewangles</span>
+                        <span class="api-params">()</span>
+                    </div>
+                    <p class="api-desc">Returns the original user-input angles <code>(pitch, yaw, roll)</code>.</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">cmd.set_viewangles</span>
+                        <span class="api-params">(float pitch, float yaw, float roll)</span>
+                    </div>
+                    <p class="api-desc">Sets new command viewangles. This is used to implement custom anti-aims, spinbots, or trigger rotations.</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">cmd.get_sendpacket</span>
+                        <span class="api-params">()</span>
+                    </div>
+                    <p class="api-desc">Returns whether the current command packet is flagged to be sent to the server (true) or choked (false).</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">cmd.set_sendpacket</span>
+                        <span class="api-params">(bool send)</span>
+                    </div>
+                    <p class="api-desc">Chokes or dispatches the current packet. Alternating this creates client-side desynchronization (fake lag / fake body angles).</p>
+                </div>
+            </section>
+
+            <!-- Section: menu -->
+            <section id="menu" class="content-section">
+                <h2>menu namespace</h2>
+                <p class="section-desc">Create custom checkboxes, sliders, and dropdown menus dynamically inside the cheat's default GUI LUA tab.</p>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">menu.add_checkbox</span>
+                        <span class="api-params">(string label, bool default_value)</span>
+                    </div>
+                    <p class="api-desc">Registers a checkbox to the UI. Returns the current menu state (true/false) on every query.</p>
+                    <pre><code class="language-lua">local draw_panel = menu.add_checkbox("Show Indicator Panel", true)</code></pre>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">menu.add_slider_int</span>
+                        <span class="api-params">(string label, int min, int max, int default_value)</span>
+                    </div>
+                    <p class="api-desc">Registers an integer slider. Returns the selected value integer.</p>
+                    <pre><code class="language-lua">local offset = menu.add_slider_int("Yaw Offset", -180, 180, 90)</code></pre>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">menu.add_select</span>
+                        <span class="api-params">(string label, table options, int default_index)</span>
+                    </div>
+                    <p class="api-desc">Registers a combobox dropdown select field. Indexing starts at 1.</p>
+                    <pre><code class="language-lua">local mode = menu.add_select("Jitter Mode", {"None", "Standard", "Random"}, 1)</code></pre>
+                </div>
+            </section>
+
+            <!-- Section: localplayer -->
+            <section id="localplayer" class="content-section">
+                <h2>localplayer namespace</h2>
+                <p class="section-desc">Check active local user data parameters.</p>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">localplayer.alive</span>
+                        <span class="api-params">()</span>
+                    </div>
+                    <p class="api-desc">Returns true if the local client player is currently alive in game.</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">localplayer.health</span>
+                        <span class="api-params">()</span>
+                    </div>
+                    <p class="api-desc">Returns the current health points of the local player.</p>
+                </div>
+            </section>
+
+            <!-- Section: playground -->
+            <section id="playground" class="content-section">
+                <h2>Interactive Playground</h2>
+                <p class="section-desc">Load pre-built scripts or write your own custom layout code below to simulate how the baby.tech indicators and menu items render live on screen.</p>
+                
+                <div class="playground-layout">
+                    <!-- Editor Panel -->
+                    <div class="editor-pane glass-card">
+                        <div class="pane-header">
+                            <h4>Script Editor</h4>
+                            <div class="editor-controls">
+                                <button id="load-dt-preset" class="btn btn-sm">Load Doubletap Preset</button>
+                                <button id="load-aa-preset" class="btn btn-sm">Load Anti-Aim Preset</button>
+                            </div>
+                        </div>
+                        <div class="code-editor-container">
+                            <textarea id="playground-code" spellcheck="false">-- Write custom indicator drawing code here!
+local doubletap_active = menu.add_checkbox("Toggle DT Indicator", true)
+
+client.register_callback("paint", function()
+    if doubletap_active then
+        draw.rect(10, 10, 150, 40, 20, 20, 20, 240)
+        draw.outlined_rect(10, 10, 150, 40, 60, 60, 60, 255)
+        draw.text("DOUBLETAP", 18, 16, 255, 255, 255, 255)
+        -- Custom spring bar progress simulation
+        draw.animated_bar("dt_bar", 18, 30, 134, 4, 0.75, 255, 0, 128, 255, "spring", 6.0)
+    end
+end)</textarea>
+                        </div>
+                        <div class="pane-footer">
+                            <button id="run-code-btn" class="btn btn-primary">Execute / Update Preview</button>
+                        </div>
+                    </div>
+
+                    <!-- Simulator Preview Panel -->
+                    <div class="simulator-pane glass-card">
+                        <div class="pane-header">
+                            <h4>Render Output Screen (1920x1080 Mockup)</h4>
+                            <span class="fps-counter">FPS: 144.0</span>
+                        </div>
+                        
+                        <!-- Screen Output Canvas -->
+                        <div class="mock-screen">
+                            <div class="crosshair-marker">+</div>
+                            <canvas id="simulator-canvas"></canvas>
+                        </div>
+
+                        <!-- Menu Control Sidebar in Playground -->
+                        <div class="mock-menu glass-card">
+                            <h5>LUA Settings Panel</h5>
+                            <div id="mock-menu-items">
+                                <!-- Dynamic checkmarks / sliders are added here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer-bottom">
+        <p>&copy; 2026 baby.tech. Premium visual cheats and game engines.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
