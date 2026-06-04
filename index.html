@@ -63,12 +63,6 @@
                     <span class="nav-indicator"></span>
                     <a href="#localplayer">localplayer</a>
                 </li>
-
-                <li class="nav-category">Developer Tools</li>
-                <li class="nav-item" data-section="playground">
-                    <span class="nav-indicator"></span>
-                    <a href="#playground">Interactive Playground</a>
-                </li>
             </ul>
         </nav>
 
@@ -79,9 +73,6 @@
                 <div class="glass-card hero-card">
                     <h2>Enhance your gameplay with scripts.</h2>
                     <p class="subtitle">The baby.tech LUA framework allows you to build custom indicators, control angles for anti-aim, and design highly personalized widgets with direct game loop hooks.</p>
-                    <div class="hero-actions">
-                        <a href="#playground" class="btn btn-primary">Try Interactive Simulator</a>
-                    </div>
                 </div>
 
                 <div class="grid-2">
@@ -493,64 +484,6 @@ end</code></pre>
                         <span class="api-params">()</span>
                     </div>
                     <p class="api-desc">Returns the current health points of the local player.</p>
-                </div>
-            </section>
-
-            <!-- Section: playground -->
-            <section id="playground" class="content-section">
-                <h2>Interactive Playground</h2>
-                <p class="section-desc">Load pre-built scripts or write your own custom layout code below to simulate how the baby.tech indicators and menu items render live on screen.</p>
-                
-                <div class="playground-layout">
-                    <!-- Editor Panel -->
-                    <div class="editor-pane glass-card">
-                        <div class="pane-header">
-                            <h4>Script Editor</h4>
-                            <div class="editor-controls">
-                                <button id="load-dt-preset" class="btn btn-sm">Load Doubletap Preset</button>
-                                <button id="load-aa-preset" class="btn btn-sm">Load Anti-Aim Preset</button>
-                            </div>
-                        </div>
-                        <div class="code-editor-container">
-                            <textarea id="playground-code" spellcheck="false">-- Write custom indicator drawing code here!
-local doubletap_active = menu.add_checkbox("Toggle DT Indicator", true)
-
-client.register_callback("paint", function()
-    if doubletap_active then
-        draw.rect(10, 10, 150, 40, 20, 20, 20, 240)
-        draw.outlined_rect(10, 10, 150, 40, 60, 60, 60, 255)
-        draw.text("DOUBLETAP", 18, 16, 255, 255, 255, 255)
-        -- Custom spring bar progress simulation
-        draw.animated_bar("dt_bar", 18, 30, 134, 4, 0.75, 255, 0, 128, 255, "spring", 6.0)
-    end
-end)</textarea>
-                        </div>
-                        <div class="pane-footer">
-                            <button id="run-code-btn" class="btn btn-primary">Execute / Update Preview</button>
-                        </div>
-                    </div>
-
-                    <!-- Simulator Preview Panel -->
-                    <div class="simulator-pane glass-card">
-                        <div class="pane-header">
-                            <h4>Render Output Screen (1920x1080 Mockup)</h4>
-                            <span class="fps-counter">FPS: 144.0</span>
-                        </div>
-                        
-                        <!-- Screen Output Canvas -->
-                        <div class="mock-screen">
-                            <div class="crosshair-marker">+</div>
-                            <canvas id="simulator-canvas"></canvas>
-                        </div>
-
-                        <!-- Menu Control Sidebar in Playground -->
-                        <div class="mock-menu glass-card">
-                            <h5>LUA Settings Panel</h5>
-                            <div id="mock-menu-items">
-                                <!-- Dynamic checkmarks / sliders are added here -->
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </section>
         </main>
