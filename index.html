@@ -185,6 +185,18 @@ end</code></pre>
                     <p class="api-desc">Returns the current RGB values of the active UI accent color selected by the user <code>(r, g, b)</code>.</p>
                     <pre><code class="language-lua">local ar, ag, ab = client.menu_accent()</code></pre>
                 </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">client.get_bind_info</span>
+                        <span class="api-params">(string bind_name)</span>
+                    </div>
+                    <p class="api-desc">Returns a table with keybind info from C++ config: <code>{ active = bool, key_name = string, mode = string, key = int }</code>.</p>
+                    <pre><code class="language-lua">local info = client.get_bind_info("aimbot")
+if info then
+    client.log("Aimbot bind is " .. info.key_name .. " and state is " .. tostring(info.active))
+end</code></pre>
+                </div>
             </section>
 
             <!-- Section: draw -->
