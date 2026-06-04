@@ -138,6 +138,51 @@ end)`;
             ctx.lineWidth = 1;
             ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
         },
+        filled_rounded_rect: (x, y, w, h, rad, r, g, b, a) => {
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a / 255})`;
+            ctx.beginPath();
+            ctx.roundRect(x, y, w, h, rad);
+            ctx.fill();
+        },
+        outlined_rounded_rect: (x, y, w, h, rad, r, g, b, a) => {
+            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a / 255})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.roundRect(x + 0.5, y + 0.5, w - 1, h - 1, rad);
+            ctx.stroke();
+        },
+        head_box: (fake, r, g, b, a) => {
+            // Draw a cute simulated 3D head box in the center of the mock preview screen
+            ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a / 255})`;
+            ctx.lineWidth = 1.5;
+            
+            // Draw a mock 3D cube near the crosshair
+            const cx = canvas.width / 2 + (fake ? 25 : -25);
+            const cy = canvas.height / 2 - 40;
+            const size = 15;
+            
+            // Front face
+            ctx.strokeRect(cx - size/2, cy - size/2, size, size);
+            
+            // Back face (offset)
+            const off = 5;
+            ctx.strokeRect(cx - size/2 + off, cy - size/2 - off, size, size);
+            
+            // Connecting corners
+            ctx.beginPath();
+            ctx.moveTo(cx - size/2, cy - size/2);
+            ctx.lineTo(cx - size/2 + off, cy - size/2 - off);
+            
+            ctx.moveTo(cx + size/2, cy - size/2);
+            ctx.lineTo(cx + size/2 + off, cy - size/2 - off);
+            
+            ctx.moveTo(cx - size/2, cy + size/2);
+            ctx.lineTo(cx - size/2 + off, cy + size/2 - off);
+            
+            ctx.moveTo(cx + size/2, cy + size/2);
+            ctx.lineTo(cx + size/2 + off, cy + size/2 - off);
+            ctx.stroke();
+        },
         text: (text, x, y, r, g, b, a, font) => {
             ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${a / 255})`;
             ctx.font = font === 'esp_small' ? 'bold 10px Outfit' : 'bold 12px Outfit';

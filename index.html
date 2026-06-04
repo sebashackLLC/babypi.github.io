@@ -218,6 +218,30 @@ end</code></pre>
 
                 <div class="api-card">
                     <div class="api-header">
+                        <span class="api-method">draw.filled_rounded_rect</span>
+                        <span class="api-params">(int x, int y, int w, int h, int radius, int r, int g, int b, int a)</span>
+                    </div>
+                    <p class="api-desc">Draws a perfectly anti-aliased filled rectangle with rounded corners using native engine polygon rendering.</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">draw.outlined_rounded_rect</span>
+                        <span class="api-params">(int x, int y, int w, int h, int radius, int r, int g, int b, int a)</span>
+                    </div>
+                    <p class="api-desc">Draws a perfectly anti-aliased outline border rectangle with rounded corners.</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
+                        <span class="api-method">draw.head_box</span>
+                        <span class="api-params">(bool fake, int r, int g, int b, int a)</span>
+                    </div>
+                    <p class="api-desc">Renders a 3D bounding box around the local player's head. Set <code>fake</code> to true to draw the desynchronized fake anti-aim head, or false to draw the real head position.</p>
+                </div>
+
+                <div class="api-card">
+                    <div class="api-header">
                         <span class="api-method">draw.line</span>
                         <span class="api-params">(int x1, int y1, int x2, int y2, int r, int g, int b, int a)</span>
                     </div>
