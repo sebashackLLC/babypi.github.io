@@ -358,29 +358,38 @@ end)`;
 
         const scriptContent = codeEditor.value;
 
-        // Sandboxed evaluation environment mapper
         try {
             // Translate LUA constructs to JS matches inside sandbox context
-            const sandboxedJS = scriptContent
+            let sandboxedJS = scriptContent
                 // Replace comments
                 .replace(/--.*/g, '')
-                // Replace lua namespaces
-                .replace(/draw\./g, 'draw.')
-                .replace(/menu\./g, 'menu.')
-                .replace(/client\./g, 'client.')
-                // Match standard LUA constructs to basic JS
+                // Replace string concatenation
+                .replace(/\.\./g, '+')
+                // Replace not equal operator
+                .replace(/~=/g, '!==')
+                // Replace logical operators with word boundaries
+                .replace(/\bnot\b/g, '!')
+                .replace(/\band\b/g, '&&')
+                .replace(/\bor\b/g, '||')
+                // Replace local with let
                 .replace(/local\s+/g, 'let ')
+                // Replace if statements
+                .replace(/if\s+(.*?)\s+then/g, 'if ($1) {')
+                .replace(/elseif\s+(.*?)\s+then/g, 'else if ($1) {')
+                .replace(/else\b/g, 'else {')
+                // Replace functions
                 .replace(/function\s*\((.*?)\)/g, '($1) =>')
                 .replace(/function\s+(\w+)\s*\((.*?)\)/g, 'const $1 = ($2) =>')
-                .replace(/end/g, '}')
-                .replace(/then/g, '{')
-                .replace(/else\s*\{/g, 'else {')
-                .replace(/elseif/g, 'else if')
+                // Replace end
+                .replace(/\bend\b/g, '}')
+                // Replace math functions
                 .replace(/math\.floor/g, 'Math.floor')
                 .replace(/math\.sin/g, 'Math.sin')
                 .replace(/math\.cos/g, 'Math.cos')
+                // Replace os.time
                 .replace(/os\.time/g, '(() => Date.now()/1000)')
-                .replace(/client\.register_callback\s*\(\s*["']paint["']\s*,\s*(.*?)\s*\)/g, 'client.register_callback("paint", $1)');
+                // Replace nil
+                .replace(/\bnil\b/g, 'null');
 
             const runSandbox = new Function('draw', 'menu', 'client', sandboxedJS);
             runSandbox(mockDraw, mockMenu, mockClient);
